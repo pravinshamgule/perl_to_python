@@ -1,0 +1,2 @@
+[console_scripts]
+perl2python = perl2python.cli:main

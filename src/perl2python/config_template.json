@@ -1,0 +1,83 @@
+{
+  "conversion_options": {
+    "preserve_comments": true,
+    "add_type_hints": true,
+    "convert_pod_to_docstrings": true,
+    "handle_line_continuations": true,
+    "strict_mode": false
+  },
+  "module_mappings": {
+    "Data::Dumper": "pprint",
+    "Getopt::Long": "argparse",
+    "File::Basename": "os.path",
+    "Time::Local": "time",
+    "JSON": "json",
+    "LWP::UserAgent": "requests",
+    "DBI": "sqlite3",
+    "Cwd": "os",
+    "File::Path": "os, shutil",
+    "File::Copy": "shutil",
+    "File::Spec": "os.path",
+    "File::Temp": "tempfile",
+    "IO::File": "io",
+    "IO::Handle": "io",
+    "IO::Socket": "socket",
+    "Storable": "pickle",
+    "Digest::MD5": "hashlib",
+    "MIME::Base64": "base64",
+    "Net::FTP": "ftplib",
+    "Net::SMTP": "smtplib",
+    "Net::HTTP": "http.client",
+    "XML::Simple": "xml.etree.ElementTree"
+  },
+  "syntax_mappings": {
+    "variable_prefixes": {
+      "$": "",
+      "@": "",
+      "%": ""
+    },
+    "operators": {
+      "eq": "==",
+      "ne": "!=",
+      "lt": "<",
+      "gt": ">",
+      "le": "<=",
+      "ge": ">=",
+      "=~": "re.search",
+      "!~": "not re.search",
+      "||": "or",
+      "&&": "and",
+      "//": "or"
+    },
+    "special_variables": {
+      "$_": "line",
+      "@_": "args",
+      "$0": "__file__",
+      "$1, $2, ...": "match.group(1), match.group(2), ...",
+      "$!": "os.strerror(errno)",
+      "$.": "line_num",
+      "$#array": "len(array) - 1",
+      "$ENV{...}": "os.environ[...]"
+    }
+  },
+  "code_style": {
+    "indentation": "    ",
+    "line_length": 88,
+    "use_single_quotes": false,
+    "add_trailing_commas": true,
+    "sort_imports": true
+  },
+  "custom_functions": {
+    "my_perl_func": "def my_python_func(arg1, arg2=None):\n    # Custom implementation\n    pass"
+  },
+  "ignore_patterns": [
+    ".*\\.bak$",
+    ".*\\.tmp$",
+    "^temp_.*\\.pl$"
+  ],
+  "logging": {
+    "level": "INFO",
+    "file": "perl2python_conversion.log",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  }
+}

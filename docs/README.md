@@ -1,0 +1,177 @@
+# Perl to Python Conversion Agent
+
+An AI-powered tool for converting Perl code to Python.
+
+## Overview
+
+The Perl to Python Conversion Agent is a tool designed to help developers migrate their Perl codebases to Python. It analyzes Perl code and generates equivalent Python code, handling common Perl idioms, syntax, and built-in functions.
+
+## Features
+
+- Convert individual Perl files or entire directories to Python
+- Preserve code structure and comments
+- Map Perl modules to their Python equivalents
+- Convert Perl's special variables to Python equivalents
+- Handle Perl-specific syntax like variable prefixes (`$`, `@`, `%`)
+- Customizable conversion through configuration files
+- Command-line interface for easy integration into workflows
+
+## Installation
+
+### Prerequisites
+
+- Python 3.6 or higher
+
+### Install from source
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/perl2python.git
+   cd perl2python
+   ```
+
+2. Install the package:
+   ```
+   pip install -e .
+   ```
+
+## Usage
+
+### Basic Usage
+
+Convert a single Perl file to Python:
+
+```bash
+python -m perl2python.cli path/to/your/script.pl
+```
+
+This will create a new Python file with the same name but with a `.py` extension in the same directory.
+
+### Specifying Output
+
+You can specify the output file or directory:
+
+```bash
+python -m perl2python.cli path/to/your/script.pl -o path/to/output/script.py
+```
+
+### Converting Directories
+
+Convert all Perl files in a directory:
+
+```bash
+python -m perl2python.cli path/to/perl/dir -o path/to/python/dir
+```
+
+Use the `-r` flag to recursively process subdirectories:
+
+```bash
+python -m perl2python.cli path/to/perl/dir -o path/to/python/dir -r
+```
+
+### Using Configuration Files
+
+You can customize the conversion process using a configuration file:
+
+```bash
+python -m perl2python.cli path/to/your/script.pl -c path/to/config.json
+```
+
+See the [Configuration](#configuration) section for details on the configuration format.
+
+### Other Options
+
+- `--verbose` or `-v`: Enable verbose output
+- `--debug` or `-d`: Enable debug mode with more detailed logging
+- `--dry-run`: Show what would be done without making changes
+- `--version`: Show version information and exit
+
+Run `python -m perl2python.cli --help` for a complete list of options.
+
+## Configuration
+
+The conversion process can be customized using a JSON configuration file. Here's an example configuration:
+
+```json
+{
+  "conversion_options": {
+    "preserve_comments": true,
+    "add_type_hints": true,
+    "convert_pod_to_docstrings": true
+  },
+  "module_mappings": {
+    "Data::Dumper": "pprint",
+    "Getopt::Long": "argparse"
+  },
+  "syntax_mappings": {
+    "variable_prefixes": {
+      "$": "",
+      "@": "",
+      "%": ""
+    },
+    "operators": {
+      "eq": "==",
+      "ne": "!="
+    }
+  }
+}
+```
+
+See the `config_template.json` file for a complete example with all available options.
+
+## Conversion Details
+
+### Perl to Python Mappings
+
+#### Variable Types
+
+| Perl | Python |
+|------|--------|
+| `$scalar` | `scalar` |
+| `@array` | `array` |
+| `%hash` | `dictionary` |
+
+#### Operators
+
+| Perl | Python |
+|------|--------|
+| `eq` | `==` |
+| `ne` | `!=` |
+| `lt` | `<` |
+| `gt` | `>` |
+| `le` | `<=` |
+| `ge` | `>=` |
+| `=~` | `re.search()` |
+| `!~` | `not re.search()` |
+
+#### Common Modules
+
+| Perl | Python |
+|------|--------|
+| `Data::Dumper` | `pprint` |
+| `Getopt::Long` | `argparse` |
+| `File::Basename` | `os.path` |
+| `JSON` | `json` |
+| `LWP::UserAgent` | `requests` |
+
+See the `config_template.json` file for a more complete list of module mappings.
+
+## Limitations
+
+- The converter may not handle all Perl idioms perfectly
+- Complex regular expressions may need manual adjustment
+- Perl XS modules (with C code) cannot be automatically converted
+- Some Perl-specific features like typeglobs have no direct Python equivalent
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- This project was inspired by the need to modernize legacy Perl codebases
+- Thanks to all contributors who have helped improve this tool
