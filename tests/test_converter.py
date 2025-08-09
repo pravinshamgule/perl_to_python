@@ -64,6 +64,199 @@ class TestPerlToPythonConverter(unittest.TestCase):
         print("-" * 40)
         print(python_code)
         print("-" * 40)
+        
+    def test_loop_constructs_conversion(self):
+        """Test the conversion of Perl loop constructs."""
+        # Create a temporary Perl file with loop constructs
+        perl_code = """#!/usr/bin/perl
+use strict;
+use warnings;
+
+# For loop with range
+for my $i (1..5) {
+    print "i = $i\\n";
+}
+
+# Foreach loop with array
+my @fruits = ('apple', 'banana', 'orange');
+foreach my $fruit (@fruits) {
+    print "fruit = $fruit\\n";
+}
+
+# While loop
+my $count = 0;
+while ($count < 3) {
+    print "count = $count\\n";
+    $count++;
+}
+
+# Until loop
+my $value = 10;
+until ($value <= 0) {
+    print "value = $value\\n";
+    $value -= 2;
+}
+"""
+        perl_file = Path(self.temp_dir) / 'loops.pl'
+        with open(perl_file, 'w', encoding='utf-8') as f:
+            f.write(perl_code)
+            
+        python_file = Path(self.temp_dir) / 'loops.py'
+        
+        # Convert the file
+        self.converter.convert_file(str(perl_file), str(python_file))
+        
+        # Check that the output file exists
+        self.assertTrue(python_file.exists())
+        
+        # Read the converted Python code
+        with open(python_file, 'r', encoding='utf-8') as f:
+            python_code = f.read()
+        
+        # Validate the conversion
+        self.assertIn('for i in range(1, 6):', python_code)
+        self.assertIn('for fruit in fruits:', python_code)
+        self.assertIn('while count < 3:', python_code)
+        self.assertIn('while not (value <= 0):', python_code)
+        
+        # Print the converted code for inspection
+        print("\nConverted loop constructs code:")
+        print("-" * 40)
+        print(python_code)
+        print("-" * 40)
+        
+    def test_regex_operations_conversion(self):
+        """Test the conversion of Perl regex operations."""
+        # Create a temporary Perl file with regex operations
+        perl_code = """#!/usr/bin/perl
+use strict;
+use warnings;
+
+my $text = "Hello, World!";
+
+# Match operation
+if ($text =~ m/Hello/) {
+    print "Text contains 'Hello'\\n";
+}
+
+# Case-insensitive match
+if ($text =~ m/world/i) {
+    print "Text contains 'world' (case-insensitive)\\n";
+}
+
+# Substitution
+$text =~ s/Hello/Hi/;
+print "After substitution: $text\\n";
+
+# Global substitution
+my $sentence = "apple orange apple banana apple";
+$sentence =~ s/apple/fruit/g;
+print "After global substitution: $sentence\\n";
+
+# Translation
+my $uppercase = "abcdef";
+$uppercase =~ tr/a-z/A-Z/;
+print "After translation: $uppercase\\n";
+"""
+        perl_file = Path(self.temp_dir) / 'regex.pl'
+        with open(perl_file, 'w', encoding='utf-8') as f:
+            f.write(perl_code)
+            
+        python_file = Path(self.temp_dir) / 'regex.py'
+        
+        # Convert the file
+        self.converter.convert_file(str(perl_file), str(python_file))
+        
+        # Check that the output file exists
+        self.assertTrue(python_file.exists())
+        
+        # Read the converted Python code
+        with open(python_file, 'r', encoding='utf-8') as f:
+            python_code = f.read()
+        
+        # Validate the conversion
+        self.assertIn('import re', python_code)
+        self.assertIn("re.search(r'Hello'", python_code)
+        self.assertIn("re.search(r'world'", python_code)
+        self.assertIn("re.IGNORECASE", python_code)
+        self.assertIn("re.sub(r'Hello'", python_code)
+        self.assertIn("re.sub(r'apple'", python_code)
+        self.assertIn("str.maketrans", python_code)
+        
+        # Print the converted code for inspection
+        print("\nConverted regex operations code:")
+        print("-" * 40)
+        print(python_code)
+        print("-" * 40)
+        
+    def test_hash_array_operations_conversion(self):
+        """Test the conversion of Perl hash and array operations."""
+        # Create a temporary Perl file with hash and array operations
+        perl_code = """#!/usr/bin/perl
+use strict;
+use warnings;
+
+# Array operations
+my @numbers = (1, 2, 3, 4, 5);
+print "First element: $numbers[0]\\n";
+print "Last index: $#numbers\\n";
+push @numbers, 6;
+my $popped = pop @numbers;
+unshift @numbers, 0;
+my $shifted = shift @numbers;
+
+# Hash operations
+my %person = (
+    'name' => 'John',
+    'age' => 30,
+    'city' => 'New York'
+);
+print "Name: $person{'name'}\\n";
+print "Age: $person{age}\\n";
+$person{'job'} = 'Developer';
+delete $person{'city'};
+
+# Hash iteration
+foreach my $key (keys %person) {
+    print "$key: $person{$key}\\n";
+}
+"""
+        perl_file = Path(self.temp_dir) / 'hash_array.pl'
+        with open(perl_file, 'w', encoding='utf-8') as f:
+            f.write(perl_code)
+            
+        python_file = Path(self.temp_dir) / 'hash_array.py'
+        
+        # Convert the file
+        self.converter.convert_file(str(perl_file), str(python_file))
+        
+        # Check that the output file exists
+        self.assertTrue(python_file.exists())
+        
+        # Read the converted Python code
+        with open(python_file, 'r', encoding='utf-8') as f:
+            python_code = f.read()
+        
+        # Validate the conversion
+        self.assertIn("numbers = [1, 2, 3, 4, 5]", python_code)
+        self.assertIn("numbers[0]", python_code)
+        self.assertIn("len(numbers) - 1", python_code)
+        self.assertIn("numbers.append", python_code)
+        self.assertIn("numbers.pop", python_code)
+        self.assertIn("numbers.insert(0", python_code)
+        self.assertIn("numbers.pop(0)", python_code)
+        self.assertIn("person = {", python_code)
+        self.assertIn("'name': 'John'", python_code)
+        self.assertIn("person['name']", python_code)
+        self.assertIn("person['job'] = 'Developer'", python_code)
+        self.assertIn("del person['city']", python_code)
+        self.assertIn("for key in person.keys():", python_code)
+        
+        # Print the converted code for inspection
+        print("\nConverted hash and array operations code:")
+        print("-" * 40)
+        print(python_code)
+        print("-" * 40)
 
     def test_directory_conversion(self):
         """Test the conversion of a directory of Perl files."""

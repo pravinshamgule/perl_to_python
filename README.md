@@ -42,6 +42,10 @@ An AI-powered Perl to Python conversion agent has been successfully implemented,
 - Map Perl modules to their Python equivalents
 - Convert Perl's special variables to Python equivalents
 - Handle Perl-specific syntax like variable prefixes (`$`, `@`, `%`)
+- Support for Perl's loop constructs (for, foreach, while, until)
+- Support for Perl's regex operations (match, substitution, translation)
+- Support for Perl's hash and array operations
+- Automatic post-processing to fix common conversion issues
 - Customizable conversion through configuration files
 - Command-line interface for easy integration into workflows
 
